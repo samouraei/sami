@@ -38,7 +38,7 @@ RUN npm install
 # Bundle app source
 COPY . ./
 
-CMD npm start ./server.js
+CMD npm start server.js
 
 EXPOSE 3000
-CMD [ "node", "app.js" ]
+CMD [ "node", "server.js" ]
