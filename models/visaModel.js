@@ -17,7 +17,7 @@ validityPeriod: {
     required: [true, 'Validity period is required']
 },
 duration: {
-    type: Number, // Duration in days
+    type: Number, // Duration in days.
     required: [true, 'duration  is required']
 },
 urgencyLevel: {
