@@ -40,5 +40,5 @@ COPY . ./
 
 CMD npm start ./server.js
 
-EXPOSE 8020
+EXPOSE 3000
 CMD [ "node", "server.js" ]
