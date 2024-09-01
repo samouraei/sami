@@ -9,13 +9,13 @@ const Country = require('../models/countryModel');
 
 exports.createVisa = catchAsync(async (req, res, next) => {
     const { visaType, validityPeriod, duration,urgencyLevel,issuancePeriod } = req.body;
-    const countryID = req.body.countryId; // Access the user ID from the authenticated user
+    const countryId = req.body.countryId; // Access the user ID from the authenticated user
 
-    console.log(countryID);
+    console.log(countryId);
 
     // Assuming createVisa is a service function that saves the visa
     const newVisa = await createVisa
-    (countryID, { visaType, validityPeriod, duration,urgencyLevel,issuancePeriod });
+    (countryId, { visaType, validityPeriod, duration,urgencyLevel,issuancePeriod });
 
 
     return message('custom_message',{  msg: "done", newVisa, status: 200 },req,res)
@@ -25,9 +25,9 @@ exports.createVisa = catchAsync(async (req, res, next) => {
 
 exports.findCountry = catchAsync(async (req, res, next) => {
 
-    const countryID = req.body.countryId; // Access the country ID from the request
+    const countryId = req.body.countryId; // Access the country ID from the request
 
-    const country = await Country.findById(countryID);
+    const country = await Country.findById(countryId);
 
     if(!country) {
         return next(new AppError('there is no country with that ID', 400))
@@ -40,17 +40,19 @@ exports.findCountry = catchAsync(async (req, res, next) => {
 
 exports.setVisaKind = catchAsync(async (req, res, next) => {
 
-    const countryID = req.body.countryId; // Access the country ID from the request
+    const countryId = req.body.countryId; // Access the country ID from the request
     const visaKind = req.body.visaKind
 
-    const country = await Country.findById(countryID);
+    const country = await Country.findById(countryId);
 
     if(!country) {
         return next(new AppError('there is no country with that ID', 400))
     } else {
 
-        country.visaKind = visaKind
-        await Country.save(country)
+        country.visaKind = visaKind;
+
+        // Save the updated country document
+        await country.save();
 
     return message('custom_message',{  msg: "success", country, status: 200 },req,res)
     }
