@@ -1,27 +1,28 @@
 const Country = require('../../models/countryModel');
+const Visa = require('../../models/visaModel');
 const AppError = require('../../utils/appError'); // Adjust path as needed
-const catchAsync = require('../../utils/catchAsync'); // Adjust path as needed
 
 // Function to create or update a user profile
-const createVisa = async (countryID, { name, visaType, validityPeriod, duration,urgencyLevel,issuancePeriod,refCountry }) => {
+const createVisa = async (countryID, { visaType, validityPeriod, duration,urgencyLevel,issuancePeriod }) => {
 
   const country = await Country.findById(countryID);
 
   if (!country) {
-    throw new AppError('country not found', 404);
+    return ( new AppError('country not found', 404));
   }
 
-  country.name = name;
-  country.visaType = visaType;
-  country.validityPeriod = validityPeriod;
-  country.duration = duration;
-  country.urgencyLevel = urgencyLevel;
-  country.issuancePeriod = issuancePeriod;
-  country.country = refCountry;
+  const visa = new Visa({
+    name: country.name,
+    visaType,
+    validityPeriod,
+    duration,
+    urgencyLevel,
+    issuancePeriod,
+    refCountry: countryID
+  });
 
-  await country.save();
-country
-return country;
+  await visa.save();
+  return Visa;
 };
 
 module.exports = {

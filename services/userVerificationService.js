@@ -46,7 +46,7 @@ const userActivation = async (user, res, next) => {
         return next(new AppError('No user available for activation.', 400));
     }
 
-    const token = createToken({ id: user._id, phoneNumber: user.phoneNumber });
+    const token = createToken(user);
     user.token = token;
     await user.save();
 

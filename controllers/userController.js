@@ -13,9 +13,13 @@ exports.login = catchAsync(async (req, res, next) => {
      const phoneNumber = req.body.phoneNumber;
 
      const user = await login(phoneNumber, res, next);
+     verificationCode = user.verificationCode;
     //  console.log(user);
 
-    return message('success','ready_register',req,res)
+    return message('custom_message',{  msg: "success", verificationCode, status: 200 },req,res)
+
+
+    // return message('success','ready_register',req,res)
 });
 
 exports.verification = catchAsync(async (req, res, next) => {
@@ -26,9 +30,14 @@ exports.verification = catchAsync(async (req, res, next) => {
 
     const result = await userActivation(verifiedUser, next);
 
-    // console.log(result)
+        console.log('result :', result)
+
+    const token = result.token
+
+    return message('custom_message',{  msg: "success", token, status: 200 },req,res)
+
     
-    return message('success','register_steptwo',req,res)
+    // return message('success','register_steptwo',req,res)
     
     });
 

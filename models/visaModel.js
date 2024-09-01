@@ -5,7 +5,7 @@ const visaSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true
+    // unique: true
   },
   visaType: {
     type: String,
@@ -22,7 +22,7 @@ duration: {
 },
 urgencyLevel: {
     type: String,
-    enum: [' عادی', 'فوری '],
+    enum: ['عادی', 'فوری'],
     required: [true, 'urgency type is required'],
 },
 issuancePeriod: {

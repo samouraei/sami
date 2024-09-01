@@ -7,25 +7,30 @@ const sendVerificationCode = async (user) => {
     const verificationCode = Math.floor(100000 + Math.random() * 900000).toString(); // Generate a 6-digit code
     const expirationTime = new Date(Date.now() + 120 * 1000); // Set expiration time to 1 minute from now
 
-    await new Promise((resolve, reject) => {
-        api.VerifyLookup({
-            receptor: user.phoneNumber,
-            token: verificationCode,
-            template: 'registerverify'
-        }, (response, status) => {
-            if (status === 200) {
-                user.verificationCode = verificationCode;
+    user.verificationCode = verificationCode;
                 user.verificationCodeExpires = expirationTime;
                 user.verificationRequests += 1; // Increment the request count
-                user.save((err) => {
-                    if (err) return reject(err);
-                    resolve(response);
-                });
-            } else {
-                reject(new Error('Failed to send verification code'));
-            }
-        });
-    });
+                user.save()
+
+    // await new Promise((resolve, reject) => {
+    //     api.VerifyLookup({
+    //         receptor: user.phoneNumber,
+    //         token: verificationCode,
+    //         template: 'registerverify'
+    //     }, (response, status) => {
+    //         if (status === 200) {
+    //             user.verificationCode = verificationCode;
+    //             user.verificationCodeExpires = expirationTime;
+    //             user.verificationRequests += 1; // Increment the request count
+    //             user.save((err) => {
+    //                 if (err) return reject(err);
+    //                 resolve(response);
+    //             });
+    //         } else {
+    //             reject(new Error('Failed to send verification code'));
+    //         }
+    //     });
+    // });
 };
 
 module.exports = sendVerificationCode;

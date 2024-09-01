@@ -6,12 +6,8 @@ const userSchema = new mongoose.Schema({
     phoneNumber: {
         type: String,
         unique: [true, "Phone number is already in use."],
-        // validate: {
-        //     validator: function(v) {
-        //         return /^09\d{9}$/.test(v); // Adjust the regex pattern according to the length of the phone number
-        //     },
-        //     message: props => `${props.value} is not a valid phone number!`
-        // }
+        required: [true, "A phone number is required."],
+      
     },
     verificationCode: {
         type: String,
@@ -63,15 +59,6 @@ const userSchema = new mongoose.Schema({
         
 });
 
-// Method to send verification code
-// userSchema.methods.sendVerificationCode = function(callback) {
-//     sendVerificationCode(this, callback);
-// };
-
-// Method to verify code
-// userSchema.methods.verifyCode = function(code, callback) {
-//     verifyCode(this, code, callback);
-// };
 
 
 

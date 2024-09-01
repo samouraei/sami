@@ -2,26 +2,7 @@ const { check, validationResult } = require('express-validator');
 const Country = require('../../models/countryModel');
 
 const sanitizeVisaData = [
-  // Sanitize and validate 'name'
-  check('name')
-    .trim()
-    .escape()
-    .notEmpty()
-    .withMessage('Name is required')
-    .isLength({ max: 50 })
-    .withMessage('Name cannot exceed 50 characters')
-    .custom(async (value,{req}) => {
-      const country = await Country.findOne({ name: value });
-      if (!country) {
-        throw new Error('Name does not exist in the countries');
-      }
-
-      req.countryId = country._id; // Attach the country ID to the req object
-
-      return true;
-    }),
-
-  // Sanitize and validate 'visaType'
+  
   check('visaType')
     .trim()
     .escape()
@@ -57,7 +38,7 @@ const sanitizeVisaData = [
     .withMessage('Issuance period must be a positive integer'),
 
   // Sanitize and validate 'refCountry'
-  check('refCountry')
+  check('countryId')
     .trim()
     .escape()
     .isMongoId()
