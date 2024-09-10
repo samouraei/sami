@@ -15,6 +15,14 @@ exports.adminSignUp = catchAsync(async (req, res, next) => {
         return next(new AppError('Invalid admin sign-up code', 403));
     }
 
+    // Extract the user information from the verified token
+    const tokenUser = req.user; // Assuming you have a middleware that verifies the token and attaches the user to req.user
+
+    // Check if the phone number in the token matches the one in the request
+    if (tokenUser.phoneNumber !== phoneNumber) {
+        return next(new AppError('Phone number mismatch. The phone number in the token does not match the one in the request.', 403));
+    }
+
     // Check if the user exists as a regular user
     const user = await User.findOne({ phoneNumber });
     if (!user) {
@@ -23,14 +31,14 @@ exports.adminSignUp = catchAsync(async (req, res, next) => {
 
     // Upgrade the user to admin
     user.role = 'admin';
-    await user.save();
-
-    const token = createToken(user);
+    const token = createToken(user); // Assuming createToken generates a new JWT for the admin user
     user.token = token;
     await user.save();
 
-    return message('custom_message', { msg: "Admin sign-up successful",token, status: 200 }, req, res);
+    // Send response
+    return message('custom_message', { msg: "Admin sign-up successful", token, status: 200 }, req, res);
 });
+
 
 
 
