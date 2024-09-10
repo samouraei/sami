@@ -2,17 +2,17 @@ const AppError = require('../utils/appError');
 const {createVisa}  = require('../middlewares/visa/createVisa');
 const catchAsync = require('../utils/catchAsync');
 const {message} = require('../utils/messages_user');
-const Country = require('../models/countryModel');
 
 
 
 
 exports.createVisa = catchAsync(async (req, res, next) => {
-    const { visaType, validityPeriod, duration,urgencyLevel,issuancePeriod } = req.body;
-    const countryId = req.body.countryId; // Access the user ID from the authenticated user
+    const { name, visaType, validityPeriod, duration,urgencyLevel,issuancePeriod,refCountry } = req.body;
+    const countryID = req.countryId; // Access the user ID from the authenticated user
 
     // Assuming createVisa is a service function that saves the visa
-    const newVisa = await createVisa (countryId, { visaType, validityPeriod, duration,urgencyLevel,issuancePeriod });
+    const newVisa = await createVisa
+    (countryID, { name, visaType, validityPeriod, duration,urgencyLevel,issuancePeriod,refCountry });
 
 
     return message('custom_message',{  msg: "done", newVisa, status: 200 },req,res)
@@ -64,5 +64,18 @@ exports.setVisaKind = catchAsync(async (req, res, next) => {
 
     return message('custom_message',{  msg: "success", country, status: 200 },req,res)
     }
+
+})
+
+exports.createPickup = catchAsync(async (req, res, next) => {
+    const { name, price,pickupLocation,dropoffLocation,duration,pickupDate,createdAt,requiredDocuments } = req.body;
+    const countryId = req.body.countryId; // Access the user ID from the authenticated user
+
+    // Assuming createPickup is a service function that saves the visa
+    const newPickup = await createPickup (countryId,
+         { name, price,pickupLocation,dropoffLocation,duration,pickupDate,createdAt,requiredDocuments });
+
+
+    return message('custom_message',{  msg: "done", newPickup, status: 200 },req,res)
 
 })
