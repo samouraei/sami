@@ -22,6 +22,7 @@ const createVisa = async (countryID, { visaType, validityPeriod, duration,urgenc
   });
 
   await visa.save();
+  console.log(visa);
   return visa;
 };
 
