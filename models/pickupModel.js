@@ -31,13 +31,13 @@ const pickupSchema = new mongoose.Schema({
     maxDays: {
       type: Number,
       required: true,
-      validate: {
-        validator: function(value) {
-          // Ensuring maxDays is greater than or equal to minDays
-          return value >= this.minDays;
-        },
-        message: 'Max days must be greater than or equal to min days'
-      }
+      // validate: {
+      //   validator: function(value) {
+      //     // Ensuring maxDays is greater than or equal to minDays
+      //     return value >= this.minDays;
+      //   },
+      //   message: 'Max days must be greater than or equal to min days'
+      // }
     }
   },
   pickupDate: {
@@ -58,6 +58,11 @@ const pickupSchema = new mongoose.Schema({
       message: 'At least one document is required'
     }
   },
+  refCountry: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Country',
+    required: [true, 'Country is required']
+  }
 });
 
 const Pickup = mongoose.model('Pickup', pickupSchema);

@@ -1,6 +1,7 @@
 const AppError = require('../utils/appError');
 const Country = require('../models/countryModel');
 const {createVisa}  = require('../middlewares/visa/createVisa');
+const {createPickup}  = require('../middlewares/pickup/createPickup');
 const catchAsync = require('../utils/catchAsync');
 const {message} = require('../utils/messages_user');
 

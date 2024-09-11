@@ -47,11 +47,11 @@ const sanitizePickupData = [
     .withMessage('Pickup date must be a valid date'),
 
   // Sanitize and validate 'requiredDocuments' (array of file names)
-  check('requiredDocuments.*')
-    .trim()
-    .escape()
-    .matches(/\.(jpg|jpeg|png|pdf)$/i)
-    .withMessage('Each document must be an image (jpg, jpeg, png) or a PDF'),
+  // check('requiredDocuments.*')
+  //   .trim()
+  //   .escape()
+  //   // .matches(/\.(jpg|jpeg|png|pdf)$/i)
+  //   .withMessage('Each document must be an image (jpg, jpeg, png) or a PDF'),
 
   // Handle validation result
   (req, res, next) => {

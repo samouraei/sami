@@ -3,6 +3,7 @@ const visaController = require('../../controllers/visaController');
 const adminController = require('../../controllers/adminController');
 const jwtAuthService = require('../../services/jwtAuthService');
 const sanitizeVisaData = require('../../middlewares/visa/sanitizeVisaData')
+const sanitizePickupData = require('../../middlewares/pickup/sanitizePickupData')
 const router = express.Router();
 // const sanitizeVerificationCode  = require('../../middlewares/userMiddlewares/sanitizeVerificationCode');
 
@@ -28,6 +29,12 @@ router.post('/visa/createVisa',
     jwtAuthService.protect,
     jwtAuthService.restrictTo('admin'),
     visaController.createVisa
+);
+router.post('/visa/createPickup',
+    sanitizePickupData,
+    jwtAuthService.protect,
+    jwtAuthService.restrictTo('admin'),
+    visaController.createPickup
 );
 
 
