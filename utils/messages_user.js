@@ -34,7 +34,7 @@ const errors = {
       status: 400,
     },
     wrong_input_code: {
-      msg: "کد ورودی اشتباه است",
+      msg: "کد اعتبارسنجی نامعتبر است",
       status: 400,
     },
     error_subtitle_sub: {
@@ -175,10 +175,10 @@ const errors = {
   
       msg: "ادرس نامعتبر است",
     },
-    postal_not_valid: {
+    verification_not_valid: {
       status: 400,
   
-      msg: "کد پستی نامعتبر است",
+      msg: "کد اعتبارسنجی منقضی است",
     },
     IgChecker_is_not_available: {
       status: 500,
@@ -235,7 +235,7 @@ const errors = {
     error_1: {
       status: 400,
   
-      msg: "اطلاعات وارد شده صحیح نیست.",
+      msg: "کد ادمین وارد شده صحیح نیست.",
     },
     error_2: {
       status: 400,

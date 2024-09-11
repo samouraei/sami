@@ -1,30 +1,34 @@
 const AppError = require('../utils/appError');
 const User = require('../models/userModel');
 const { createToken } = require('../middlewares/user/jwtCreateTokenService');
+const catchAsync = require('../utils/catchAsync');
+const {message} = require('../utils/messages_user');
+
 
 // Middleware to verify the verification code
-const verifyCode = async (phoneNumber, verificationCode, next) => {
+const verifyCode = async (phoneNumber, verificationCode,req,res, next) => {
     // const { phoneNumber, verificationCode } = req.body;
 
     const user = await User.findOne({ phoneNumber });
 
     if (!user) {
-        return next(new AppError('No user found with that mobile number', 404));
+
+        return message('error','not_found_cellphone', req, res);
     }
 
     if (!user.verificationCode || !user.verificationCodeExpires) {
-        return next(new AppError('No verification code found.', 400));
+        return message('error','wrong_input_code', req, res);
     }
 
     if (Date.now() > user.verificationCodeExpires) {
         user.verificationCode = null;
         user.verificationCodeExpires = null;
         await user.save();
-        return next(new AppError('Verification code expired.', 400));
+        return message('error','verification_not_valid', req, res);
     }
 
     if (user.verificationCode !== verificationCode) {
-        return next(new AppError('Invalid verification code.', 400));
+        return message('error','wrong_input_code', req, res);
     }
 
     // Verification successful, clear the code and expiration time
@@ -43,7 +47,7 @@ const userActivation = async (user, res, next) => {
     // const user = req.user; // Access the user from the previous middleware
 
     if (!user) {
-        return next(new AppError('No user available for activation.', 400));
+        return message('error','not_found_cellphone', req, res);
     }
 
     const token = createToken(user);

@@ -1,23 +1,22 @@
-const User = require('../../models/userModel');
-const AppError = require('../../utils/appError'); // Adjust path as needed
-const catchAsync = require('../../utils/catchAsync'); // Adjust path as needed
+const {message} = require('../../utils/messages_user');
+
 
 // Function to create or update a user profile
-const createProfile = async (userId, { name, email, userAddress, bankAcc }) => {
+const createProfile = async (  name, email, userAddress, bankAcc,req, res ) => {
 
-  const authenticatedUser = await User.findById(userId);
+  const tokenUser = req.user;;
 
-  if (!authenticatedUser) {
-    throw new AppError('User not found', 404);
+  if (!tokenUser) {
+    return message('error','not_found_cellphone', req, res);
   }
 
-  authenticatedUser.name = name;
-  authenticatedUser.email = email;
-  authenticatedUser.userAddress = userAddress;
-  authenticatedUser.bankAcc = bankAcc;
-  await authenticatedUser.save();
+  tokenUser.name = name;
+  tokenUser.email = email;
+  tokenUser.userAddress = userAddress;
+  tokenUser.bankAcc = bankAcc;
+  await tokenUser.save();
 
-return authenticatedUser;
+return tokenUser;
 };
 
 module.exports = {

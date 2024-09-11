@@ -14,10 +14,10 @@ exports.createVisa = catchAsync(async (req, res, next) => {
 // console.log(countryID);
     // Assuming createVisa is a service function that saves the visa
     const newVisa = await createVisa
-    (countryID, { name, visaType, validityPeriod, duration,urgencyLevel,issuancePeriod,refCountry });
+    (countryID, { name, visaType, validityPeriod, duration,urgencyLevel,issuancePeriod,refCountry, req, res });
 
 
-    return message('custom_message',{  msg: "done", newVisa, status: 200 },req,res)
+    return message('custom_message',{  msg: "ویزای جدید ایجاد شد", newVisa, status: 200 },req,res)
 
 })
 
@@ -56,7 +56,7 @@ exports.setVisaKind = catchAsync(async (req, res, next) => {
     const country = await Country.findById(countryId);
 
     if(!country) {
-        return next(new AppError('there is no country with that ID', 400))
+        return message('error','error_13', req, res);
     } else {
 
         country.visaKind = visaKind;
@@ -64,7 +64,7 @@ exports.setVisaKind = catchAsync(async (req, res, next) => {
         // Save the updated country document
         await country.save();
 
-    return message('custom_message',{  msg: "success", country, status: 200 },req,res)
+    return message('custom_message',{  msg: "ویزا ثبت شد", country, status: 200 },req,res)
     }
 
 })
@@ -78,6 +78,6 @@ exports.createPickup = catchAsync(async (req, res, next) => {
          { name, price,pickupLocation,dropoffLocation,duration,pickupDate,createdAt,requiredDocuments });
 
 
-    return message('custom_message',{  msg: "done", newPickup, status: 200 },req,res)
+    return message('custom_message',{  msg: "پیکاپ جدید ایجاد شد", newPickup, status: 200 },req,res)
 
 })

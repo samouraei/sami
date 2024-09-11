@@ -16,7 +16,7 @@ exports.login = catchAsync(async (req, res, next) => {
      verificationCode = user.verificationCode;
     //  console.log(user);
 
-    return message('custom_message',{  msg: "success", verificationCode, status: 200 },req,res)
+    return message('custom_message',{  msg: "کد اعتبارسنجی ارسال شد", verificationCode, status: 200 },req,res)
 
 
     // return message('success','ready_register',req,res)
@@ -26,15 +26,15 @@ exports.verification = catchAsync(async (req, res, next) => {
     const { verificationCode, phoneNumber } = req.body;
     // console.log('Controller called with:', { verificationCode, phoneNumber });
 
-    const verifiedUser = await verifyCode(phoneNumber ,verificationCode, next)
+    const verifiedUser = await verifyCode(phoneNumber ,verificationCode,req,res, next)
 
-    const result = await userActivation(verifiedUser, next);
+    const result = await userActivation(verifiedUser,req,res, next);
 
-        console.log('result :', result)
+        // console.log('result :', result)
 
     const token = result.token
 
-    return message('custom_message',{  msg: "success", token, status: 200 },req,res)
+    return message('custom_message',{  msg: "اعتبارسنجی باموفقیت انجام شد", token, status: 200 },req,res)
 
     
     // return message('success','register_steptwo',req,res)
@@ -43,18 +43,18 @@ exports.verification = catchAsync(async (req, res, next) => {
 
     exports.createProfile = catchAsync(async (req, res, next) => {
         const { name, email, userAddress, bankAcc } = req.body;
-        const userId = req.user.id; // Access the user ID from the authenticated user
+        // const userId = req.user.id; // Access the user ID from the authenticated user
     
         // Log req.user to see if it's correctly populated
         // console.log('Authenticated User:', req.user);
     
         // Assuming createProfile is a service function that saves the profile
-        const newUserProfile = await createProfile(userId, { name, email, userAddress, bankAcc });
+        const newUserProfile = await createProfile( name, email, userAddress, bankAcc,req, res );
     
         // Log the newly created user profile
         // console.log('New User Profile:', newUserProfile);
     
-        return message('custom_message',{  msg: "done", newUserProfile, status: 200 },req,res)
+        return message('custom_message',{  msg: "پروفایل به روز رسانی شد", newUserProfile, status: 200 },req,res)
 
     });
     

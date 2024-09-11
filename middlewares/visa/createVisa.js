@@ -3,12 +3,12 @@ const Visa = require('../../models/visaModel');
 const AppError = require('../../utils/appError'); // Adjust path as needed
 
 // Function to create or update a user profile
-const createVisa = async (countryID, { visaType, validityPeriod, duration,urgencyLevel,issuancePeriod }) => {
+const createVisa = async (countryID, { visaType, validityPeriod, duration,urgencyLevel,issuancePeriod, req, res }) => {
 
   const country = await Country.findById(countryID);
 
   if (!country) {
-    return ( new AppError('country not found', 404));
+    return message('error','error_13', req, res);
   }
 
   const visa = new Visa({
@@ -22,7 +22,7 @@ const createVisa = async (countryID, { visaType, validityPeriod, duration,urgenc
   });
 
   await visa.save();
-  console.log(visa);
+  // console.log(visa);
   return visa;
 };
 

@@ -8,14 +8,14 @@ const login = async (phoneNumber) => {
     // Check if user already exists
     let user = await User.findOne({ phoneNumber: phoneNumber });
 
-    console.log('user:',user)
+    // console.log('user:',user)
 
     if (!user) {
         // If user does not exist, create a new user with the sanitized phone number
         user = new User({ phoneNumber: phoneNumber });
         await user.save();
 
-        console.log('newUser:',user)
+        // console.log('newUser:',user)
 
 
     } 
@@ -23,7 +23,7 @@ const login = async (phoneNumber) => {
      // Send verification code
       await sendVerificationCode(user);
 
-console.log('service:',user)
+// console.log('service:',user)
         
         return (user)
 
