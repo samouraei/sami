@@ -65,4 +65,19 @@ exports.setVisaKind = catchAsync(async (req, res, next) => {
     return message('custom_message',{  msg: "success", country, status: 200 },req,res)
     }
 
+<<<<<<< HEAD
+=======
+})
+
+exports.createPickup = catchAsync(async (req, res, next) => {
+    const { visaType, validityPeriod, duration,urgencyLevel,issuancePeriod } = req.body;
+    const countryId = req.body.countryId; // Access the user ID from the authenticated user
+
+    // Assuming createVisa is a service function that saves the visa
+    const newVisa = await createVisa (countryId, { visaType, validityPeriod, duration,urgencyLevel,issuancePeriod });
+
+
+    return message('custom_message',{  msg: "done", newVisa, status: 200 },req,res)
+
+>>>>>>> 90059c4c248293ea048f7e0736568f7b42d92e82
 })
