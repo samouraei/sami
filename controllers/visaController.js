@@ -11,11 +11,8 @@ exports.createVisa = catchAsync(async (req, res, next) => {
     const { visaType, validityPeriod, duration,urgencyLevel,issuancePeriod } = req.body;
     const countryId = req.body.countryId; // Access the user ID from the authenticated user
 
-    console.log(countryId);
-
     // Assuming createVisa is a service function that saves the visa
-    const newVisa = await createVisa
-    (countryId, { visaType, validityPeriod, duration,urgencyLevel,issuancePeriod });
+    const newVisa = await createVisa (countryId, { visaType, validityPeriod, duration,urgencyLevel,issuancePeriod });
 
 
     return message('custom_message',{  msg: "done", newVisa, status: 200 },req,res)
@@ -24,19 +21,30 @@ exports.createVisa = catchAsync(async (req, res, next) => {
 
 
 exports.findCountry = catchAsync(async (req, res, next) => {
+    // Get page number from query, default to 1 if not provided
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = 20; // Number of countries per page
+    const skip = (page - 1) * limit; // Calculate how many items to skip
+    
+    // Find countries with pagination
+    const countryList = await Country.find()
+        .skip(skip)
+        .limit(limit)
+        .select('name') // Select only the country name field if you need only names
+    
+    // Get total count of countries for pagination metadata
+    const totalCountries = await Country.countDocuments();
 
-    const countryId = req.body.countryId; // Access the country ID from the request
+    // Return the country list along with pagination info
+    return message('custom_message', {
+        countryList,
+        status: 200,
+        totalCountries,
+        currentPage: page,
+        totalPages: Math.ceil(totalCountries / limit)
+    }, req, res);
+});
 
-    const country = await Country.findById(countryId);
-
-    if(!country) {
-        return next(new AppError('there is no country with that ID', 400))
-    } else {
-
-    return message('custom_message',{  msg: "success", country, status: 200 },req,res)
-    }
-
-})
 
 exports.setVisaKind = catchAsync(async (req, res, next) => {
 

@@ -22,7 +22,7 @@ const createVisa = async (countryID, { visaType, validityPeriod, duration,urgenc
   });
 
   await visa.save();
-  return Visa;
+  return visa;
 };
 
 module.exports = {
