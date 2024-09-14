@@ -2,6 +2,7 @@ const AppError = require('../utils/appError');
 const Country = require('../models/countryModel');
 const {createVisa}  = require('../middlewares/visa/createVisa');
 const {createPickup}  = require('../middlewares/pickup/createPickup');
+const {createAppointment}  = require('../middlewares/appointment/createAppointment');
 const catchAsync = require('../utils/catchAsync');
 const {message,msgList} = require('../utils/messages_user');
 
@@ -81,5 +82,18 @@ exports.createPickup = catchAsync(async (req, res, next) => {
 
 
     return message('custom_message',{  msg: "پیکاپ جدید ایجاد شد", newPickup, status: 200 },req,res)
+
+})
+
+exports.createAppointment = catchAsync(async (req, res, next) => {
+    const { name, price,appointmentLocation,duration,createdAt,requiredDocuments } = req.body;
+    const countryId = req.body.countryId; // Access the user ID from the authenticated user
+
+    // Assuming createPickup is a service function that saves the visa
+    const newAppointment = await createAppointment (countryId,
+         { name, price,appointmentLocation,duration,createdAt,requiredDocuments });
+
+
+    return message('custom_message',{  msg: "وقت سفارت جدید ایجاد شد", newAppointment, status: 200 },req,res)
 
 })
