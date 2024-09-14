@@ -3,7 +3,7 @@ const Country = require('../models/countryModel');
 const {createVisa}  = require('../middlewares/visa/createVisa');
 const {createPickup}  = require('../middlewares/pickup/createPickup');
 const catchAsync = require('../utils/catchAsync');
-const {message} = require('../utils/messages_user');
+const {message,msgList} = require('../utils/messages_user');
 
 
 
@@ -56,7 +56,9 @@ exports.setVisaKind = catchAsync(async (req, res, next) => {
     const country = await Country.findById(countryId);
 
     if(!country) {
-        return message('error','error_13', req, res);
+        // return message('error','error_13', req, res);
+        return next(new AppError(msgList.error.error_13.msg, msgList.error.error_13.status));
+
     } else {
 
         country.visaKind = visaKind;

@@ -1,7 +1,7 @@
 const AppError = require('../utils/appError');
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
-const {message,errors} = require('../utils/messages_user');
+const {message,msgList} = require('../utils/messages_user');
 const { createToken } = require('../middlewares/user/jwtCreateTokenService');
 
 
@@ -10,7 +10,8 @@ exports.adminSignUp = catchAsync(async (req, res, next) => {
 
     // Check if the admin code matches the required code
     if (adminCode !== process.env.ADMIN_SIGNUP_CODE) {
-        return message('error','error_1', req, res);
+        // return message('error','error_1', req, res);
+        return next(new AppError(msgList.error.error_1.msg, msgList.error.error_1.status));
     }
 
     // Extract the user information from the verified token
@@ -18,7 +19,9 @@ exports.adminSignUp = catchAsync(async (req, res, next) => {
 
     // Check if the phone number in the token matches the one in the request
     if (tokenUser.phoneNumber !== phoneNumber) {
-        return message('error','not_found_cellphone', req, res);
+        // return message('error','not_found_cellphone', req, res);
+        return next(new AppError(msgList.error.not_found_cellphone.msg, msgList.error.not_found_cellphone.status));
+
     }
 
     // Check if the user exists as a regular user
