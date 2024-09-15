@@ -25,7 +25,10 @@ const createAppointment = async (countryID,
   });
 
   await appointment.save();
-  console.log(appointment);
+        // Add the visa ID to the country's visas array and update the country
+        country.appointments.push(appointment._id);
+        await country.save(); // Save the updated country with the new visa ID
+  // console.log(appointment);
   return appointment;
 };
 

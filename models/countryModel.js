@@ -1,18 +1,35 @@
-// models/Country.js
 const mongoose = require('mongoose');
 
+// Updated Country schema
 const countrySchema = new mongoose.Schema({
   name: {
     type: String,
-    // required: true,
-    unique: true
+    unique: true,
+    required: true
   },
-  visaKind :{
-
+  visaKind: {
     type: String,
-    enum: ['3ماهه', '45روزه','الکترونیکی','فرودگاهی','مسدود','بدون ویزا','30روزه'],
-    required: [true, 'visa kind is required']
-  }
+    enum: ['3ماهه', '45روزه', 'الکترونیکی', 'فرودگاهی', 'مسدود', 'بدون ویزا', '30روزه'],
+    required: [true, 'Visa kind is required']
+  },
+  visas: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Visa'
+    }
+  ],
+  appointments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Appointment'
+    }
+  ],
+  pickups: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Pickup'
+    }
+  ]
 });
 
 const Country = mongoose.model('Country', countrySchema);

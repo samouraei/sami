@@ -25,6 +25,11 @@ const createVisa = async (countryID, { visaType, validityPeriod, duration,urgenc
   });
 
   await visa.save();
+
+    // Add the visa ID to the country's visas array and update the country
+    country.visas.push(visa._id);
+    await country.save(); // Save the updated country with the new visa ID
+ 
   // console.log(visa);
   return visa;
 };

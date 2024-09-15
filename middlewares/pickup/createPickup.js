@@ -27,7 +27,12 @@ const createPickup = async (countryID,
   });
 
   await pickup.save();
-  console.log(pickup);
+
+      // Add the visa ID to the country's visas array and update the country
+      country.pickups.push(pickup._id);
+      await country.save(); // Save the updated country with the new visa ID
+
+  // console.log(pickup);
   return pickup;
 };
 
