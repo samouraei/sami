@@ -2,11 +2,11 @@ const express = require('express');
 const visaController = require('../../controllers/visaController');
 const adminController = require('../../controllers/adminController');
 const jwtAuthService = require('../../services/jwtAuthService');
-const sanitizeVisaData = require('../../middlewares/visa/sanitizeVisaData')
-const sanitizePickupData = require('../../middlewares/pickup/sanitizePickupData')
-const sanitizeAppointmentData = require('../../middlewares/appointment/sanitizeAppointmentData')
+const sanitizeData = require('../../middlewares/sanitizeData')
+
+
+
 const router = express.Router();
-// const sanitizeVerificationCode  = require('../../middlewares/userMiddlewares/sanitizeVerificationCode');
 
 router.post('/signup',
     jwtAuthService.protect,
@@ -26,20 +26,20 @@ router.post('/visa/setVisaKind',
 );
 
 router.post('/visa/createVisa',
-    sanitizeVisaData,
+    sanitizeData('createVisa'),
     jwtAuthService.protect,
     jwtAuthService.restrictTo('admin'),
     visaController.createVisa
 );
 router.post('/visa/createPickup',
-    sanitizePickupData,
+    sanitizeData('createPickup'),
     jwtAuthService.protect,
     jwtAuthService.restrictTo('admin'),
     visaController.createPickup
 );
 
 router.post('/visa/createAppointment',
-    sanitizeAppointmentData,
+    sanitizeData('createAppointment'),
     jwtAuthService.protect,
     jwtAuthService.restrictTo('admin'),
     visaController.createAppointment

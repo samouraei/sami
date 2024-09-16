@@ -2,18 +2,18 @@ const express = require('express');
 const userController = require('../../controllers/userController');
 const jwtAuthService = require('../../services/jwtAuthService');
 const router = express.Router();
-const sanitizePhoneNumber = require('../../middlewares/user/sanitizePhoneNumber')
-const sanitizeVerificationCode  = require('../../middlewares/user/sanitizeVerificationCode');
+const sanitizeData = require('../../middlewares/sanitizeData')
+
 
 
 
 router.post('/login',
-    sanitizePhoneNumber,
+    sanitizeData('phoneNumber'),
     userController.login);
 
 router.post('/verification',
-    sanitizePhoneNumber,
-    sanitizeVerificationCode,
+    sanitizeData('phoneNumber'),
+    sanitizeData('verificationCode'),
     userController.verification);
 
 
