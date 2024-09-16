@@ -516,6 +516,16 @@ const errors = {
   
       msg: "اطلاعات ورودی اشتباه است",
     },
+    wrong_input_visa: {
+      status: 400,
+  
+      msg: "اطلاعات ورودی برای ویزا اشتباه است",
+    },
+    wrong_input_visa_1: {
+      status: 400,
+  
+      msg: "ویزای مورد نظر برای این کشور معتبر نیست ",
+    },
     error_60: {
       status: 400,
   

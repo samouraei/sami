@@ -1,10 +1,12 @@
 const AppError = require('../utils/appError');
 const Country = require('../models/countryModel');
 const {createVisa}  = require('../middlewares/visa/createVisa');
+const {visaOrdering}  = require('../middlewares/visa/visaOrdering');
 const {createPickup}  = require('../middlewares/pickup/createPickup');
 const {createAppointment}  = require('../middlewares/appointment/createAppointment');
 const catchAsync = require('../utils/catchAsync');
 const {message,msgList} = require('../utils/messages_user');
+const Visa = require('../models/visaModel');
 
 
 
@@ -33,7 +35,7 @@ exports.findCountry = catchAsync(async (req, res, next) => {
     const countryList = await Country.find()
         .skip(skip)
         .limit(limit)
-        .select('name') // Select only the country name field if you need only names
+        .select('name _id'); // Select both the name and _id fields
     
     // Get total count of countries for pagination metadata
     const totalCountries = await Country.countDocuments();
@@ -95,5 +97,34 @@ exports.createAppointment = catchAsync(async (req, res, next) => {
 
 
     return message('custom_message',{  msg: "وقت سفارت جدید ایجاد شد", newAppointment, status: 200 },req,res)
+
+})
+
+
+exports.visaOrdering = catchAsync(async (req, res, next) => {
+
+    const countryId = req.body.countryId; // Access the country ID from the request
+    const visaId = req.body.visaId;
+
+    const country = await Country.findById(countryId);
+
+    if(!country) 
+        // return message('error','error_13', req, res);
+        return next(new AppError(msgList.error.error_13.msg, msgList.error.error_13.status));
+
+    const visa = await Visa.findById(visaId);
+
+         if(!visa) 
+        // return message('error','error_13', req, res);
+        return next(new AppError(msgList.error.wrong_input_visa.msg, msgList.error.wrong_input_visa.status));
+
+        if(!country.visas.some(visa => visa._id.toString() === visaId))
+
+            return next(new AppError(msgList.error.wrong_input_visa_1.msg, msgList.error.wrong_input_visa_1.status));
+
+            const newOrdering = await visaOrdering (req, res, next);
+            
+    return message('custom_message',{  msg: " ثبت سفارش انجام شد", newOrdering, status: 200 },req,res)
+    
 
 })

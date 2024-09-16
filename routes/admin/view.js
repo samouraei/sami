@@ -45,6 +45,13 @@ router.post('/visa/createAppointment',
     visaController.createAppointment
 );
 
+router.post('/visa/visaOrdering',
+    
+    jwtAuthService.protect,
+    jwtAuthService.restrictTo('admin'),
+    visaController.visaOrdering
+);
+
 
 // router.post('/createProfile',
 //     jwtAuthService.protect,
