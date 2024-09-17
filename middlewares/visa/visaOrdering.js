@@ -25,14 +25,15 @@ const visaOrdering = async (req,res,next) => {
     birthday: req.body.birthday ,
     passportExpirationDate: req.body.passportExpirationDate,
     createdAt: Date.now(),
+    price: req.body.price,
     refVisa: visaId
   });
 
   await visaOrder.save();
 
-    // Add the visa ID to the country's visas array and update the country
-    //country.visas.push(visa._id);
-    //await country.save(); // Save the updated country with the new visa ID
+    // Add the order ID to the visas's orders array and update the visa
+    visa.orders.push(visaOrder._id);
+    await visa.save(); // Save the updated visa with the new order ID
  
   // console.log(visa);
   return visaOrder;

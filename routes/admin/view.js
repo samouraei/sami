@@ -39,6 +39,7 @@ router.post('/visa/createPickup',
 );
 
 router.post('/visa/createAppointment',
+    sanitizeData('phoneNumber'),
     sanitizeData('createAppointment'),
     jwtAuthService.protect,
     jwtAuthService.restrictTo('admin'),
@@ -46,7 +47,7 @@ router.post('/visa/createAppointment',
 );
 
 router.post('/visa/visaOrdering',
-    
+    sanitizeData('visaOrdering'),
     jwtAuthService.protect,
     jwtAuthService.restrictTo('admin'),
     visaController.visaOrdering

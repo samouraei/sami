@@ -38,11 +38,17 @@ const visaOrderSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  price: {
+    type: Number,
+    required: true,
+    min: 0 // Ensure the price is a non-negative number
+  },
   refVisa: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Visa',
     required: [true, 'Visa is required']
-  }
+  },
+ 
 });
 
 const VisaOrder = mongoose.model('VisaOrder', visaOrderSchema);

@@ -29,6 +29,12 @@ issuancePeriod: {
     type: Number, // Duration in days
     required: [true, 'issuance Period  is required']
 },
+orders: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'VisaOrder'
+  }
+],
 refCountry: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Country',
