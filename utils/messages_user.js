@@ -47,7 +47,7 @@ const errors = {
       status: 400,
     },
     not_found_mail: {
-      msg: "ایمیل وجود ندارد",
+      msg: "ایمیل وجود ندارد لطفا ایمیل خود را در حساب کاربری وارد نمایید",
       status: 400,
     },
     file_Size: {
@@ -516,6 +516,11 @@ const errors = {
   
       msg: "اطلاعات ورودی اشتباه است",
     },
+    token_expired: {
+      status: 400,
+  
+      msg: "   لینک اعتبارسنجی شما منقضی شده است",
+    },
     wrong_input_visa: {
       status: 400,
   
@@ -724,7 +729,7 @@ const errors = {
       is_success: true,
     },
     success: {
-      msg: "عملیات با موفقیت انجام شد.",
+      msg: "عملیات اعتبارسنجی با موفقیت انجام شد.",
       status: 200,
       is_success: true,
     },

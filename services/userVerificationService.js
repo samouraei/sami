@@ -1,6 +1,6 @@
 const AppError = require('../utils/appError');
 const User = require('../models/userModel');
-const { createToken } = require('../middlewares/user/jwtCreateTokenService');
+const { createToken } = require('./jwtCreateTokenService');
 const catchAsync = require('../utils/catchAsync');
 const {message,msgList} = require('../utils/messages_user');
 

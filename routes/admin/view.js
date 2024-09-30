@@ -1,4 +1,5 @@
 const express = require('express');
+// const {emailVerificationService} = require('../../services/emailVerificationService');
 const visaController = require('../../controllers/visaController');
 const adminController = require('../../controllers/adminController');
 const jwtAuthService = require('../../services/jwtAuthService');
@@ -9,9 +10,12 @@ const sanitizeData = require('../../middlewares/sanitizeData')
 const router = express.Router();
 
 router.post('/signup',
-    jwtAuthService.protect,
     adminController.adminSignUp);
 
+
+router.get('/verification/:token',
+    adminController.adminVerification);
+// 
 
 router.get('/visa/findCountry',
     jwtAuthService.protect,

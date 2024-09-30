@@ -99,7 +99,6 @@ const sanitizeData = (schema) => {
       validations = [
         validateVisaType,
         validateValidityPeriod,
-        validateDurationMinDays,
         validateUrgencyLevel,
         validateIssuancePeriod,
         validateCountryId,
