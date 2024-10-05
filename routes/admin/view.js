@@ -15,7 +15,9 @@ router.post('/signup',
 
 router.get('/verification/:token',
     adminController.adminVerification);
-// 
+
+router.post('/login',
+        adminController.adminLogin);
 
 router.get('/visa/findCountry',
     jwtAuthService.protect,
