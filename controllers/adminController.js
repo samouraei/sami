@@ -150,57 +150,20 @@ exports.adminSignUp = catchAsync(async (req, res, next) => {
          await admin.save();  
 
     // 6. Send the response with the token
-    res.status(200).json({
-      status: 'success',
-      token,
-      data: {
-        admin: {
-          email: admin.email,
-          role: admin.role,
-        },
-      },
-    });
+
+    return message('custom_message',{  msg: "ادمین وارد شد", token, status: 200 },req,res)
+
+    // res.status(200).json({
+    //   status: 'success',
+    //   token,
+    //   data: {
+    //     admin: {
+    //       email: admin.email,
+    //       role: admin.role,
+    //     },
+    //   },
+    // });
   });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // // Extract the user information from the verified token
-    // const tokenUser = req.user; // Assuming you have a middleware that verifies the token and attaches the user to req.user
-
-    // // Check if the phone number in the token matches the one in the request
-    // if (tokenUser.phoneNumber !== phoneNumber) {
-    //     // return message('error','not_found_cellphone', req, res);
-    //     return next(new AppError(msgList.error.not_found_cellphone.msg, msgList.error.not_found_cellphone.status));
-
-    // }
-
-    // // Check if the user exists as a regular user
-    // const user = tokenUser
-
-    // // Upgrade the user to admin
-    // user.role = 'admin';
-    // const token = createToken(user); // Assuming createToken generates a new JWT for the admin user
-    // user.token = token;
-    // await user.save();
-
-    // // Send response
-    // return message('custom_message', { msg: "کاربر ادمین شد عملیات موفق آمیز", token, status: 200 }, req, res);
-// });
 
 

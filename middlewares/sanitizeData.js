@@ -50,12 +50,39 @@ const validatePhoneNumber = body('phoneNumber')
   .isString().withMessage('Phone number must be a string')
   .matches(/^09\d{9}$/).withMessage('Phone number must start with "09" and be 11 digits long');
 
+
+  const validateEmail = body('email')
+  .trim() // Remove any leading/trailing whitespace
+  .notEmpty().withMessage('Email is required') // Ensure the email field is not empty
+  .isString().withMessage('Email must be a string') // Ensure the email is a string
+  .isEmail().withMessage('Please provide a valid email') // Validate the email format
+  .normalizeEmail(); // Normalize the email address (e.g., removing dots in Gmail addresses)
+
+  const validatePassword = body('password')
+  .trim() // Removes leading/trailing spaces
+  .notEmpty().withMessage('Password is required') // Ensure password field is not empty
+  .isString().withMessage('Password must be a string') // Ensure password is a string
+  .isLength({ min: 8 }).withMessage('Password must be at least 8 characters long') // Minimum length requirement
+  .matches(/\d/).withMessage('Password must contain at least one number') // At least one number
+  .matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter') // At least one uppercase letter
+  .matches(/[a-z]/).withMessage('Password must contain at least one lowercase letter') // At least one lowercase letter
+  .matches(/[@$!%*?&#]/).withMessage('Password must contain at least one special character (@$!%*?&#)') // Special character requirement
+  .not().isIn(['12345678', 'password', 'qwerty', 'admin', 'letmein']).withMessage('Do not use a common password'); // Prevent common passwords
+
+
 // Verification code validation
 const validateVerificationCode = body('verificationCode')
   .trim()
   .notEmpty().withMessage('Verification code is required')
   .isNumeric().withMessage('Verification code must be a numeric value')
   .isLength({ min: 6, max: 6 }).withMessage('Verification code must be exactly 6 digits long');
+  const emailVerificationToken = body('token')
+        .exists()
+        .withMessage('Token is required.')
+        .isString()
+        .withMessage('Token must be a string.')
+        .isLength({ min: 10, max: 100 }) // Adjust the length based on your token requirements
+        .withMessage('Token must be between 10 and 100 characters long.')
 
 // Centralized validation handler
 const handleValidationResult = (req, res, next) => {
@@ -118,6 +145,17 @@ const sanitizeData = (schema) => {
 
     case 'phoneNumber':
       validations = [validatePhoneNumber];
+      break;
+
+      case 'email':
+      validations = [validateEmail];
+      break;
+
+      case 'emailVerificationToken':
+        validations = [emailVerificationToken];
+        break;
+      case 'password':
+      validations = [validatePassword];
       break;
 
     case 'verificationCode':
