@@ -25,6 +25,10 @@ router.post('/login',
     sanitizeData('password'),
         adminController.adminLogin);
 
+router.get('/forgotPassword',
+    sanitizeData('email'),
+    adminController.adminForgotPassword);
+
 router.get('/visa/findCountry',
     jwtAuthService.protect(Admin, ['admin']),
     jwtAuthService.restrictTo('admin'),

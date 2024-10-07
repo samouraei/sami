@@ -43,17 +43,10 @@ exports.verification = catchAsync(async (req, res, next) => {
 
     exports.createProfile = catchAsync(async (req, res, next) => {
         const { name, email, userAddress, bankAcc } = req.body;
-        // const userId = req.user.id; // Access the user ID from the authenticated user
-    
-        // Log req.user to see if it's correctly populated
-        // console.log('Authenticated User:', req.user);
-    
-        // Assuming createProfile is a service function that saves the profile
+        
         const newUserProfile = await createProfile( name, email, userAddress, bankAcc,req, res );
     
-        // Log the newly created user profile
-        // console.log('New User Profile:', newUserProfile);
-    
+        
         return message('custom_message',{  msg: "پروفایل به روز رسانی شد", newUserProfile, status: 200 },req,res)
 
     });

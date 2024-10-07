@@ -37,17 +37,6 @@ const adminSchema = new mongoose.Schema({
   passwordResetExpires: Date,
 });
 
-// Middleware to hash the password before saving
-// adminSchema.pre('save', async function (next) {
-//   // Only run this function if the password was modified (not on other updates)
-//   if (!this.isModified('password')) return next();
-
-//   // Hash the password with cost of 12
-//   this.password = await bcrypt.hash(this.password, 12);
-
-//   next();
-// });
-
 // Method to compare passwords
 adminSchema.methods.correctPassword = async function(candidatePassword, userPassword) {
 

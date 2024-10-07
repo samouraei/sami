@@ -2,6 +2,7 @@
 const { emailSignUpService } = require('../services/emailSignUpService');
 const { verifyEmailToken } = require('../services/emailVerificationTokenService');
 const { emailLoginService } = require('../services/emailLoginService');
+const { forgotPassword } = require('../services/adminForgotPasswordService');
 const catchAsync = require('../utils/catchAsync');
 const {message,msgList} = require('../utils/messages_user');
 
@@ -38,5 +39,15 @@ exports.adminVerification = catchAsync(async (req, res, next) => {
     return message('custom_message', { msg: "ادمین وارد شد", token, status: 200 }, req, res);
   });
 
+
+exports.adminForgotPassword = catchAsync(async (req, res, next) => {
+    const { email } = req.body;
+  
+    // Use the service to handle forgot password logic
+    const successMessage = await forgotPassword(email, req);
+  
+    // Send the response to the client
+    return message('success', 'success_email', req, res);
+  });
 
 
