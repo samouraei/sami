@@ -17,7 +17,7 @@ router.post('/signup',
 
 
 router.get('/verification/:token',
-    sanitizeData('emailVerificationToken'),
+    // sanitizeData('emailVerificationToken'),
     adminController.adminVerification);
 
 router.post('/login',
