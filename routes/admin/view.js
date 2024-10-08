@@ -29,6 +29,9 @@ router.get('/forgotPassword',
     sanitizeData('email'),
     adminController.adminForgotPassword);
 
+router.patch('/resetPassword/:token',
+    adminController.adminResetPassword);
+
 router.get('/visa/findCountry',
     jwtAuthService.protect(Admin, ['admin']),
     jwtAuthService.restrictTo('admin'),

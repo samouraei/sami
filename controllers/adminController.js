@@ -3,6 +3,8 @@ const { emailSignUpService } = require('../services/emailSignUpService');
 const { verifyEmailToken } = require('../services/emailVerificationTokenService');
 const { emailLoginService } = require('../services/emailLoginService');
 const { forgotPassword } = require('../services/adminForgotPasswordService');
+const { resetPassword } = require('../services/adminResetPasswordService');
+const { createToken } = require('../services/jwtCreateTokenService');
 const catchAsync = require('../utils/catchAsync');
 const {message,msgList} = require('../utils/messages_user');
 
@@ -48,6 +50,21 @@ exports.adminForgotPassword = catchAsync(async (req, res, next) => {
   
     // Send the response to the client
     return message('success', 'success_email', req, res);
+  });
+
+
+exports.adminResetPassword = catchAsync(async (req, res, next) => {
+    const { token } = req.params;  // Extract token from the URL
+    const { password } = req.body; // Extract the new password from the request body
+  
+    // Use the service to handle the password reset logic
+    const admin = await resetPassword(token, password);
+  
+    // Optionally, you can generate a new token for the user if needed
+    const newToken = createToken(admin._id);
+  
+    // Send the response with a success message
+    return message('custom_message', { msg: "پسورد جدید شما ثبت شد", token: newToken, status: 200 }, req, res);
   });
 
 
