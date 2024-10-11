@@ -5,7 +5,7 @@ const sendEmail = require('../utils/email');
 const AppError = require('../utils/appError');
 const { message, msgList } = require('../utils/messages_user');
 
-exports.emailSignUpService = async ({ email, password, adminCode, req }) => {
+exports.emailSignUp = async ({ email, password, adminCode, req }) => {
   // 1. Check if the admin code matches the required code
   if (adminCode !== process.env.ADMIN_SIGNUP_CODE) {
     throw new AppError(msgList.error.error_1.msg, msgList.error.error_1.status);

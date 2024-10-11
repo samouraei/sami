@@ -3,8 +3,9 @@ const User = require('../../models/userModel');
 const Admin = require('../../models/adminModel');
 const visaController = require('../../controllers/visaController');
 const adminController = require('../../controllers/adminController');
+const tourController = require('../../controllers/tourController');
 const jwtAuthService = require('../../services/jwtAuthService');
-const sanitizeData = require('../../middlewares/sanitizeData')
+const sanitizeData = require('../../utils/sanitizeData')
 
 
 
@@ -70,6 +71,13 @@ router.post('/visa/visaOrdering',
     jwtAuthService.protect(Admin, ['admin']),
     jwtAuthService.restrictTo('admin'),
     visaController.visaOrdering
+);
+
+router.post('/tour/createFlight',
+    sanitizeData('createFlight'),
+    jwtAuthService.protect(Admin, ['admin']),
+    jwtAuthService.restrictTo('admin'),
+    tourController.createFlight
 );
 
 

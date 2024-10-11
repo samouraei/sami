@@ -2,7 +2,7 @@ const express = require('express');
 const userController = require('../../controllers/userController');
 const jwtAuthService = require('../../services/jwtAuthService');
 const router = express.Router();
-const sanitizeData = require('../../middlewares/sanitizeData')
+const sanitizeData = require('../../utils/sanitizeData')
 
 
 

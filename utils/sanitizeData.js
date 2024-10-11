@@ -2,30 +2,29 @@ const { check, body, validationResult } = require('express-validator');
 
 // Common validation functions
 const validateName = check('name').trim().escape().notEmpty().withMessage('Name is required')
-                    .isLength({ max: 30 }).withMessage('Name cannot be more than 30 characters long');
+ .isLength({ max: 30 }).withMessage('Name cannot be more than 30 characters long');
 const validateFname = check('firstName').trim().escape().notEmpty().withMessage('first Name is required')
-                    .isLength({ max: 30 }).withMessage('Name cannot be more than 30 characters long');
+ .isLength({ max: 30 }).withMessage('Name cannot be more than 30 characters long');
 const validateLname = check('lastName').trim().escape().notEmpty().withMessage('Name is required')
-                    .isLength({ max: 30 }).withMessage('Name cannot be more than 30 characters long');
+ .isLength({ max: 30 }).withMessage('Name cannot be more than 30 characters long');
 const validateBirthday = check('birthday').isISO8601().toDate().withMessage('birthday date must be a valid date');
 const validatePassportExpirationDate = check('passportExpirationDate').isISO8601()
-                                      .toDate().withMessage('passport Expiration Date date must be a valid date');
-
+  .toDate().withMessage('passport Expiration Date date must be a valid date');
 
 const validatePrice = check('price').trim().isFloat({ min: 0 }).withMessage('Price must be a non-negative number');
 
 const validateDurationMinDays = check('duration.minDays')
-                                .isInt({ min: 1 }).withMessage('Minimum days must be at least 1');
+  .isInt({ min: 1 }).withMessage('Minimum days must be at least 1');
 
 const validateDurationMaxDays = check('duration.maxDays').isInt({ min: 1 })
-                                .custom((value, { req }) => value >= req.body.duration.minDays)
-                                .withMessage('Max days must be greater than or equal to min days');
+  .custom((value, { req }) => value >= req.body.duration.minDays)
+  .withMessage('Max days must be greater than or equal to min days');
 
 const validateDocuments = check('requiredDocuments.*').trim().escape(); // Customize as needed
 
 // Appointment-specific validation
 const validateAppointmentLocation = check('appointmentLocation').trim().escape().notEmpty()
-                                    .withMessage('Appointment location is required');
+  .withMessage('Appointment location is required');
 
 // Pickup-specific validation
 const validatePickupLocation = check('pickupLocation').trim().escape().notEmpty().withMessage('Pickup location is required');
@@ -39,7 +38,6 @@ const validateUrgencyLevel = check('urgencyLevel').trim().escape().isIn(['عاد
 const validateIssuancePeriod = check('issuancePeriod').trim().escape().isInt({ min: 1 }).withMessage('Issuance period must be a positive integer');
 const validateCountryId = check('countryId').trim().escape().isMongoId().withMessage('Invalid country reference');
 
-
 // VisaOrder-specific validation
 const validatePaymentKind = check('paymentKind').trim().escape().isIn(['offline', 'online']).withMessage('Invalid payment Kind');
 
@@ -50,15 +48,14 @@ const validatePhoneNumber = body('phoneNumber')
   .isString().withMessage('Phone number must be a string')
   .matches(/^09\d{9}$/).withMessage('Phone number must start with "09" and be 11 digits long');
 
-
-  const validateEmail = body('email')
+const validateEmail = body('email')
   .trim() // Remove any leading/trailing whitespace
   .notEmpty().withMessage('Email is required') // Ensure the email field is not empty
   .isString().withMessage('Email must be a string') // Ensure the email is a string
   .isEmail().withMessage('Please provide a valid email') // Validate the email format
   .normalizeEmail(); // Normalize the email address (e.g., removing dots in Gmail addresses)
 
-  const validatePassword = body('password')
+const validatePassword = body('password')
   .trim() // Removes leading/trailing spaces
   .notEmpty().withMessage('Password is required') // Ensure password field is not empty
   .isString().withMessage('Password must be a string') // Ensure password is a string
@@ -69,20 +66,53 @@ const validatePhoneNumber = body('phoneNumber')
   .matches(/[@$!%*?&#]/).withMessage('Password must contain at least one special character (@$!%*?&#)') // Special character requirement
   .not().isIn(['12345678', 'password', 'qwerty', 'admin', 'letmein']).withMessage('Do not use a common password'); // Prevent common passwords
 
-
 // Verification code validation
 const validateVerificationCode = body('verificationCode')
   .trim()
   .notEmpty().withMessage('Verification code is required')
   .isNumeric().withMessage('Verification code must be a numeric value')
   .isLength({ min: 6, max: 6 }).withMessage('Verification code must be exactly 6 digits long');
-  const emailVerificationToken = body('token')
-        .exists()
-        .withMessage('Token is required.')
-        .isString()
-        .withMessage('Token must be a string.')
-        .isLength({ min: 10, max: 100 }) // Adjust the length based on your token requirements
-        .withMessage('Token must be between 10 and 100 characters long.')
+
+const emailVerificationToken = body('token')
+  .exists()
+  .withMessage('Token is required.')
+  .isString()
+  .withMessage('Token must be a string.')
+  .isLength({ min: 10, max: 100 }) // Adjust the length based on your token requirements
+  .withMessage('Token must be between 10 and 100 characters long.')
+
+  // Flight-specific validation
+const validateAirline = check('airline')
+.trim().escape().notEmpty().withMessage('Airline is required')
+.isLength({ max: 50 }).withMessage('Airline name cannot exceed 50 characters');
+const validateFlightNumber = check('flightNumber')
+.trim().escape().notEmpty().withMessage('Flight number is required')
+.isLength({ max: 10 }).withMessage('Flight number cannot exceed 10 characters');
+const validateFlightKind = check('flightKind')
+.trim().escape().isIn(['Charter', 'Regular']).withMessage('Invalid flight kind');
+const validateDepartureCity = check('departureCity')
+.trim().escape().notEmpty().withMessage('Departure city is required');
+const validateDepartureAirport = check('departureAirport')
+.trim().escape().notEmpty().withMessage('Departure airport is required');
+const validateArrivalCity = check('arrivalCity')
+.trim().escape().notEmpty().withMessage('Arrival city is required');
+const validateArrivalAirport = check('arrivalAirport')
+.trim().escape().notEmpty().withMessage('Arrival airport is required');
+const validateDepartureTime = check('departureTime')
+.isISO8601().withMessage('Departure time must be a valid ISO8601 date');
+const validateArrivalTime = check('arrivalTime')
+.isISO8601().withMessage('Arrival time must be a valid ISO8601 date');
+const validateLayoversNumber = check('layoversNumber')
+.isInt({ min: 0 }).withMessage('layovers number must be a non-negative integer');
+const validateLayoversDuration = check('layoversDuration')
+.isInt({ min: 0 }).withMessage('layovers duration must be a non-negative integer');
+const validateDuration = check('duration')
+.isInt({ min: 1 }).withMessage('Duration must be a positive integer');
+const validateSeatClass = check('seatClass')
+.trim().escape().isIn(['Economy', 'Business', 'First']).withMessage('Invalid seat class');
+const validateStatus = check('status')
+.trim().escape().isIn(['Scheduled', 'On Time', 'Delayed', 'Cancelled']).withMessage('Invalid status');
+
 
 // Centralized validation handler
 const handleValidationResult = (req, res, next) => {
@@ -119,6 +149,26 @@ const sanitizeData = (schema) => {
         validateDurationMaxDays,
         validatePickupDate,
         validateDocuments,
+      ];
+      break;
+
+      case 'createFlight':
+      validations = [
+        validateAirline,
+        validateFlightNumber,
+        validateFlightKind,
+        validateDepartureCity,
+        validateDepartureAirport,
+        validateArrivalCity,
+        validateArrivalAirport,
+        validateDepartureTime,
+        validateArrivalTime,
+        validateLayoversNumber,
+        validateLayoversDuration,
+        validatePrice,
+        validateDuration,
+        validateSeatClass,
+        validateStatus,
       ];
       break;
 

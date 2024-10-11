@@ -2,14 +2,11 @@ const AppError = require('../utils/appError');
 const Country = require('../models/countryModel');
 const {createVisa}  = require('../middlewares/visa/createVisa');
 const {visaOrdering}  = require('../middlewares/visa/visaOrdering');
-const {createPickup}  = require('../middlewares/pickup/createPickup');
-const {createAppointment}  = require('../middlewares/appointment/createAppointment');
+const {createPickup}  = require('../middlewares/visa/createPickup');
+const {createAppointment}  = require('../middlewares/visa/createAppointment');
 const catchAsync = require('../utils/catchAsync');
 const {message,msgList} = require('../utils/messages_user');
 const Visa = require('../models/visaModel');
-
-
-
 
 exports.createVisa = catchAsync(async (req, res, next) => {
     const { name, visaType, validityPeriod, duration,urgencyLevel,issuancePeriod,refCountry } = req.body;

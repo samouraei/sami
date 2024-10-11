@@ -3,7 +3,7 @@ const AppError = require('../utils/appError');
 const { msgList } = require('../utils/messages_user');
 const { createToken } = require('./jwtCreateTokenService');
 
-exports.emailLoginService = async (email, password) => {
+exports.emailLogin = async (email, password) => {
   // 1. Check if email and password are provided
   if (!email || !password) {
     throw new AppError(msgList.error.wrong_input.msg, msgList.error.wrong_input.status);

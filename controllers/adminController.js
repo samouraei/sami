@@ -1,7 +1,7 @@
 
-const { emailSignUpService } = require('../services/emailSignUpService');
+const { emailSignUp } = require('../services/emailSignUpService');
 const { verifyEmailToken } = require('../services/emailVerificationTokenService');
-const { emailLoginService } = require('../services/emailLoginService');
+const { emailLogin } = require('../services/emailLoginService');
 const { forgotPassword } = require('../services/adminForgotPasswordService');
 const { resetPassword } = require('../services/adminResetPasswordService');
 const { createToken } = require('../services/jwtCreateTokenService');
@@ -13,7 +13,7 @@ exports.adminSignUp = catchAsync(async (req, res, next) => {
   const { email, password, adminCode } = req.body;
 
   // Call the service for admin sign-up
-  const result = await emailSignUpService({ email, password, adminCode, req });
+  const result = await emailSignUp({ email, password, adminCode, req });
 
   // Send success message to the client
   return message('success', 'success_email', req, res);
@@ -35,7 +35,7 @@ exports.adminVerification = catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
   
     // Use the login service to handle the business logic
-    const { token, admin } = await emailLoginService(email, password);
+    const { token, admin } = await emailLogin(email, password);
   
     // Send the response with the token
     return message('custom_message', { msg: "ادمین وارد شد", token, status: 200 }, req, res);
