@@ -1,12 +1,7 @@
 const AppError = require('../utils/appError');
-const Country = require('../models/countryModel');
-const {createTask}  = require('../middlewares/visa/createTask');
-const {visaOrdering}  = require('../middlewares/visa/visaOrdering');
-const {createPickup}  = require('../middlewares/visa/createPickup');
-const {createAppointment}  = require('../middlewares/visa/createAppointment');
+const {createTask}  = require('../middlewares/task/createTask');
 const catchAsync = require('../utils/catchAsync');
 const {message,msgList} = require('../utils/messages_user');
-const Task = require('../models/taskModel');
 
 exports.createTask = catchAsync(async (req, res , next) => {
     const {userID, name, taskType, validityPeriod, duration,urgencyLevel } = req.body;

@@ -1,9 +1,8 @@
 const express = require('express');
 const User = require('../../models/userModel');
 const Admin = require('../../models/adminModel');
-const visaController = require('../../controllers/visaController');
+const visaController = require('../../controllers/taskController');
 const adminController = require('../../controllers/adminController');
-const tourController = require('../../controllers/tourController');
 const jwtAuthService = require('../../services/jwtAuthService');
 const sanitizeData = require('../../utils/sanitizeData')
 
