@@ -56,7 +56,13 @@ const userSchema = new mongoose.Schema({
              {
                 type: String,
             }
-        
+        ,
+        tasks: [
+            {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: 'Task', // Reference the Task model
+            },
+          ],
 });
 
 

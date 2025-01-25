@@ -1,5 +1,5 @@
 const Country = require('../../models/countryModel');
-const Visa = require('../../models/visaModel');
+const Visa = require('../../models/taskModel');
 const VisaOrder = require('../../models/visaOrderModel');
 const {message,msgList} = require('../../utils/messages_user');
 const AppError = require('../../utils/appError'); // Adjust path as needed

@@ -1,45 +1,43 @@
 const { check, body, validationResult } = require('express-validator');
 
 // Common validation functions
-const validateName = check('name').trim().escape().notEmpty().withMessage('Name is required')
- .isLength({ max: 30 }).withMessage('Name cannot be more than 30 characters long');
-const validateFname = check('firstName').trim().escape().notEmpty().withMessage('first Name is required')
- .isLength({ max: 30 }).withMessage('Name cannot be more than 30 characters long');
-const validateLname = check('lastName').trim().escape().notEmpty().withMessage('Name is required')
- .isLength({ max: 30 }).withMessage('Name cannot be more than 30 characters long');
-const validateBirthday = check('birthday').isISO8601().toDate().withMessage('birthday date must be a valid date');
-const validatePassportExpirationDate = check('passportExpirationDate').isISO8601()
-  .toDate().withMessage('passport Expiration Date date must be a valid date');
+// const validateName = check('name').trim().escape().notEmpty().withMessage('Name is required')
+//  .isLength({ max: 30 }).withMessage('Name cannot be more than 30 characters long');
+// const validateFname = check('firstName').trim().escape().notEmpty().withMessage('first Name is required')
+//  .isLength({ max: 30 }).withMessage('Name cannot be more than 30 characters long');
+// const validateLname = check('lastName').trim().escape().notEmpty().withMessage('Name is required')
+//  .isLength({ max: 30 }).withMessage('Name cannot be more than 30 characters long');
+// const validateBirthday = check('birthday').isISO8601().toDate().withMessage('birthday date must be a valid date');
+// const validatePassportExpirationDate = check('passportExpirationDate').isISO8601()
+//   .toDate().withMessage('passport Expiration Date date must be a valid date');
 
-const validatePrice = check('price').trim().isFloat({ min: 0 }).withMessage('Price must be a non-negative number');
+// const validatePrice = check('price').trim().isFloat({ min: 0 }).withMessage('Price must be a non-negative number');
 
-const validateDurationMinDays = check('duration.minDays')
-  .isInt({ min: 1 }).withMessage('Minimum days must be at least 1');
+// const validateDurationMinDays = check('duration.minDays')
+//   .isInt({ min: 1 }).withMessage('Minimum days must be at least 1');
 
-const validateDurationMaxDays = check('duration.maxDays').isInt({ min: 1 })
-  .custom((value, { req }) => value >= req.body.duration.minDays)
-  .withMessage('Max days must be greater than or equal to min days');
+// const validateDurationMaxDays = check('duration.maxDays').isInt({ min: 1 })
+//   .custom((value, { req }) => value >= req.body.duration.minDays)
+//   .withMessage('Max days must be greater than or equal to min days');
 
-const validateDocuments = check('requiredDocuments.*').trim().escape(); // Customize as needed
+// const validateDocuments = check('requiredDocuments.*').trim().escape(); // Customize as needed
 
-// Appointment-specific validation
-const validateAppointmentLocation = check('appointmentLocation').trim().escape().notEmpty()
-  .withMessage('Appointment location is required');
+// // Appointment-specific validation
+// const validateAppointmentLocation = check('appointmentLocation').trim().escape().notEmpty()
+//   .withMessage('Appointment location is required');
 
-// Pickup-specific validation
-const validatePickupLocation = check('pickupLocation').trim().escape().notEmpty().withMessage('Pickup location is required');
-const validateDropoffLocation = check('dropoffLocation').trim().escape().notEmpty().withMessage('Dropoff location is required');
-const validatePickupDate = check('pickupDate').isISO8601().toDate().withMessage('Pickup date must be a valid date');
+// // Pickup-specific validation
+// const validatePickupLocation = check('pickupLocation').trim().escape().notEmpty().withMessage('Pickup location is required');
+// const validateDropoffLocation = check('dropoffLocation').trim().escape().notEmpty().withMessage('Dropoff location is required');
+// const validatePickupDate = check('pickupDate').isISO8601().toDate().withMessage('Pickup date must be a valid date');
 
-// Visa-specific validation
-const validateVisaType = check('visaType').trim().escape().isIn(['ویزا لیبلی', 'ویزا الکترونیکی', 'ویزا نیاز به مشاوره']).withMessage('Invalid visa type');
+// Task-specific validation
+const validateTaskType = check('taskType').trim().escape().isIn(['database task', 'frontend task', 'backend task']).withMessage('Invalid task type');
 const validateValidityPeriod = check('validityPeriod').trim().escape().isInt({ min: 1 }).withMessage('Validity period must be a positive integer');
 const validateUrgencyLevel = check('urgencyLevel').trim().escape().isIn(['عادی', 'فوری']).withMessage('Invalid urgency level');
-const validateIssuancePeriod = check('issuancePeriod').trim().escape().isInt({ min: 1 }).withMessage('Issuance period must be a positive integer');
-const validateCountryId = check('countryId').trim().escape().isMongoId().withMessage('Invalid country reference');
+const validateIssuanceDate = check('issuanceDate').isISO8601().toDate().withMessage('Issuance date must be a valid date');
+const validateUserId = check('userId').trim().escape().isMongoId().withMessage('Invalid user reference');
 
-// VisaOrder-specific validation
-const validatePaymentKind = check('paymentKind').trim().escape().isIn(['offline', 'online']).withMessage('Invalid payment Kind');
 
 // Phone number validation
 const validatePhoneNumber = body('phoneNumber')
@@ -81,38 +79,6 @@ const emailVerificationToken = body('token')
   .isLength({ min: 10, max: 100 }) // Adjust the length based on your token requirements
   .withMessage('Token must be between 10 and 100 characters long.')
 
-  // Flight-specific validation
-const validateAirline = check('airline')
-.trim().escape().notEmpty().withMessage('Airline is required')
-.isLength({ max: 50 }).withMessage('Airline name cannot exceed 50 characters');
-const validateFlightNumber = check('flightNumber')
-.trim().escape().notEmpty().withMessage('Flight number is required')
-.isLength({ max: 10 }).withMessage('Flight number cannot exceed 10 characters');
-const validateFlightKind = check('flightKind')
-.trim().escape().isIn(['Charter', 'Regular']).withMessage('Invalid flight kind');
-const validateDepartureCity = check('departureCity')
-.trim().escape().notEmpty().withMessage('Departure city is required');
-const validateDepartureAirport = check('departureAirport')
-.trim().escape().notEmpty().withMessage('Departure airport is required');
-const validateArrivalCity = check('arrivalCity')
-.trim().escape().notEmpty().withMessage('Arrival city is required');
-const validateArrivalAirport = check('arrivalAirport')
-.trim().escape().notEmpty().withMessage('Arrival airport is required');
-const validateDepartureTime = check('departureTime')
-.isISO8601().withMessage('Departure time must be a valid ISO8601 date');
-const validateArrivalTime = check('arrivalTime')
-.isISO8601().withMessage('Arrival time must be a valid ISO8601 date');
-const validateLayoversNumber = check('layoversNumber')
-.isInt({ min: 0 }).withMessage('layovers number must be a non-negative integer');
-const validateLayoversDuration = check('layoversDuration')
-.isInt({ min: 0 }).withMessage('layovers duration must be a non-negative integer');
-const validateDuration = check('duration')
-.isInt({ min: 1 }).withMessage('Duration must be a positive integer');
-const validateSeatClass = check('seatClass')
-.trim().escape().isIn(['Economy', 'Business', 'First']).withMessage('Invalid seat class');
-const validateStatus = check('status')
-.trim().escape().isIn(['Scheduled', 'On Time', 'Delayed', 'Cancelled']).withMessage('Invalid status');
-
 
 // Centralized validation handler
 const handleValidationResult = (req, res, next) => {
@@ -128,70 +94,70 @@ const sanitizeData = (schema) => {
   let validations = [];
 
   switch (schema) {
-    case 'createAppointment':
-      validations = [
-        validateName,
-        validatePrice,
-        validateAppointmentLocation,
-        validateDurationMinDays,
-        validateDurationMaxDays,
-        validateDocuments,
-      ];
-      break;
+    // case 'createAppointment':
+    //   validations = [
+    //     validateName,
+    //     validatePrice,
+    //     validateAppointmentLocation,
+    //     validateDurationMinDays,
+    //     validateDurationMaxDays,
+    //     validateDocuments,
+    //   ];
+    //   break;
 
-    case 'createPickup':
-      validations = [
-        validateName,
-        validatePrice,
-        validatePickupLocation,
-        validateDropoffLocation,
-        validateDurationMinDays,
-        validateDurationMaxDays,
-        validatePickupDate,
-        validateDocuments,
-      ];
-      break;
+    // case 'createPickup':
+    //   validations = [
+    //     validateName,
+    //     validatePrice,
+    //     validatePickupLocation,
+    //     validateDropoffLocation,
+    //     validateDurationMinDays,
+    //     validateDurationMaxDays,
+    //     validatePickupDate,
+    //     validateDocuments,
+    //   ];
+    //   break;
 
-      case 'createFlight':
-      validations = [
-        validateAirline,
-        validateFlightNumber,
-        validateFlightKind,
-        validateDepartureCity,
-        validateDepartureAirport,
-        validateArrivalCity,
-        validateArrivalAirport,
-        validateDepartureTime,
-        validateArrivalTime,
-        validateLayoversNumber,
-        validateLayoversDuration,
-        validatePrice,
-        validateDuration,
-        validateSeatClass,
-        validateStatus,
-      ];
-      break;
+    //   case 'createFlight':
+    //   validations = [
+    //     validateAirline,
+    //     validateFlightNumber,
+    //     validateFlightKind,
+    //     validateDepartureCity,
+    //     validateDepartureAirport,
+    //     validateArrivalCity,
+    //     validateArrivalAirport,
+    //     validateDepartureTime,
+    //     validateArrivalTime,
+    //     validateLayoversNumber,
+    //     validateLayoversDuration,
+    //     validatePrice,
+    //     validateDuration,
+    //     validateSeatClass,
+    //     validateStatus,
+    //   ];
+    //   break;
 
-    case 'createVisa':
+    case 'createTask':
       validations = [
-        validateVisaType,
+        validateTaskType,
         validateValidityPeriod,
         validateUrgencyLevel,
-        validateIssuancePeriod,
-        validateCountryId,
+        // validateIssuanceDate,
+        // validateUserId,
       ];
       break;
 
-      case 'visaOrdering':
-      validations = [
-        validateFname,
-        validateLname,
-        validateBirthday,
-        validatePassportExpirationDate,
-        validatePrice,
-        validatePaymentKind
-      ];
-      break;
+      // case 'visaOrdering':
+      // validations = [
+      //   validateFname,
+      //   validateLname,
+      //   validateBirthday,
+      //   validatePassportExpirationDate,
+      //   validatePrice,
+      //   validatePaymentKind
+      // ];
+      // break;
 
     case 'phoneNumber':
       validations = [validatePhoneNumber];
