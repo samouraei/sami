@@ -2,6 +2,7 @@ const AppError = require('../utils/appError');
 const {createTask}  = require('../middlewares/task/createTask');
 const catchAsync = require('../utils/catchAsync');
 const {message,msgList} = require('../utils/messages_user');
+const Task = require('../models/taskModel');
 
 exports.createTask = catchAsync(async (req, res , next) => {
     const {userID, name, taskType, validityPeriod, duration,urgencyLevel } = req.body;
@@ -15,6 +16,61 @@ exports.createTask = catchAsync(async (req, res , next) => {
 
 })
 
+
+
+exports.getUserTasks = catchAsync(async (req, res, next) => {
+
+    console.log(req)
+
+    const userId = req.user.id; 
+  console.log(userId)
+    const tasks = await Task.find({ refUser: userId });
+
+    return message('custom_message',{  msg: "لیست تسکهای شما", tasks, status: 200 },req,res)
+
+  });
+
+
+exports.markTaskAsDone = catchAsync(async (req, res, next) => {
+  const { taskId } = req.params; 
+  const userId = req.user.id; 
+
+  const task = await Task.findOne({ _id: taskId, refUser: userId });
+
+  if (!task) {
+
+    return message('custom_message',{  msg: "Task not found or does not belong to you.", status: 404 },req,res)
+
+    // return res.status(404).json({
+    //   status: 'fail',
+    //   message: 'Task not found or does not belong to you.',
+    // });
+  }
+
+  if (task.status !== 'progress') {
+
+    return message('custom_message',{  msg: "Task is not in progress and cannot be marked as done.", status: 400 },req,res)
+
+    // return res.status(400).json({
+    //   status: 'fail',
+    //   message: 'Task is not in progress and cannot be marked as done.',
+    // });
+  }
+
+  // Update the task status to 'done'
+  task.status = 'done';
+  await task.save();
+
+  return message('custom_message',{  msg: "تسک انجام شده است", task, status: 200 },req,res)
+
+//   res.status(200).json({
+//     status: 'success',
+//     data: task,
+//   });
+});
+
+
+  
 
 // exports.findCountry = catchAsync(async (req, res, next) => {
 //     // Get page number from query, default to 1 if not provided

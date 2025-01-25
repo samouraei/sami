@@ -1,7 +1,7 @@
 const express = require('express');
 const User = require('../../models/userModel');
 const Admin = require('../../models/adminModel');
-const visaController = require('../../controllers/taskController');
+const taskController = require('../../controllers/taskController');
 const adminController = require('../../controllers/adminController');
 const jwtAuthService = require('../../services/jwtAuthService');
 const sanitizeData = require('../../utils/sanitizeData')
@@ -44,11 +44,11 @@ router.patch('/resetPassword/:token',
 //     visaController.setVisaKind
 // );
 
-router.post('/visa/createTask',
+router.post('/task/createTask',
     sanitizeData('createTask'),
     jwtAuthService.protect(Admin, ['admin']),
     jwtAuthService.restrictTo('admin'),
-    visaController.createTask
+    taskController.createTask
 );
 // router.post('/visa/createPickup',
 //     sanitizeData('createPickup'),

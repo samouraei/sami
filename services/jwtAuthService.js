@@ -67,6 +67,9 @@ const protect = (model, allowedRoles = []) => {
 
     // Determine which model to use (User or Admin)
     const currentUser = await model.findById(decoded.id);
+
+    console.log(currentUser)
+    
     if (!currentUser) {
       return next(new AppError('The user belonging to this token no longer exists.', 401));
     }
