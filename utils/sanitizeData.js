@@ -94,49 +94,7 @@ const sanitizeData = (schema) => {
   let validations = [];
 
   switch (schema) {
-    // case 'createAppointment':
-    //   validations = [
-    //     validateName,
-    //     validatePrice,
-    //     validateAppointmentLocation,
-    //     validateDurationMinDays,
-    //     validateDurationMaxDays,
-    //     validateDocuments,
-    //   ];
-    //   break;
-
-    // case 'createPickup':
-    //   validations = [
-    //     validateName,
-    //     validatePrice,
-    //     validatePickupLocation,
-    //     validateDropoffLocation,
-    //     validateDurationMinDays,
-    //     validateDurationMaxDays,
-    //     validatePickupDate,
-    //     validateDocuments,
-    //   ];
-    //   break;
-
-    //   case 'createFlight':
-    //   validations = [
-    //     validateAirline,
-    //     validateFlightNumber,
-    //     validateFlightKind,
-    //     validateDepartureCity,
-    //     validateDepartureAirport,
-    //     validateArrivalCity,
-    //     validateArrivalAirport,
-    //     validateDepartureTime,
-    //     validateArrivalTime,
-    //     validateLayoversNumber,
-    //     validateLayoversDuration,
-    //     validatePrice,
-    //     validateDuration,
-    //     validateSeatClass,
-    //     validateStatus,
-    //   ];
-    //   break;
+  
 
     case 'createTask':
       validations = [
@@ -148,16 +106,6 @@ const sanitizeData = (schema) => {
       ];
       break;
 
-      // case 'visaOrdering':
-      // validations = [
-      //   validateFname,
-      //   validateLname,
-      //   validateBirthday,
-      //   validatePassportExpirationDate,
-      //   validatePrice,
-      //   validatePaymentKind
-      // ];
-      // break;
 
     case 'phoneNumber':
       validations = [validatePhoneNumber];

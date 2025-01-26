@@ -32,56 +32,16 @@ router.get('/forgotPassword',
 router.patch('/resetPassword/:token',
     adminController.adminResetPassword);
 
-// router.get('/visa/findCountry',
-//     jwtAuthService.protect(Admin, ['admin']),
-//     jwtAuthService.restrictTo('admin'),
-//     visaController.findCountry
-// );
-
-// router.post('/visa/setVisaKind',
-//     jwtAuthService.protect(Admin, ['admin']),
-//     jwtAuthService.restrictTo('admin'),
-//     visaController.setVisaKind
-// );
-
 router.post('/task/createTask',
     sanitizeData('createTask'),
     jwtAuthService.protect(Admin, ['admin']),
     jwtAuthService.restrictTo('admin'),
-    taskController.createTask
-);
-// router.post('/visa/createPickup',
-//     sanitizeData('createPickup'),
-//     jwtAuthService.protect(Admin, ['admin']),
-//     jwtAuthService.restrictTo('admin'),
-//     visaController.createPickup
-// );
+    taskController.createTask);
 
-// router.post('/visa/createAppointment',
-//     sanitizeData('phoneNumber'),
-//     sanitizeData('createAppointment'),
-//     jwtAuthService.protect(Admin, ['admin']),
-//     jwtAuthService.restrictTo('admin'),
-//     visaController.createAppointment
-// );
+router.get('/tasks',
+    jwtAuthService.protect(Admin, ['admin']),
+    jwtAuthService.restrictTo('admin'),
+    taskController.getUserTasks);
 
-// router.post('/visa/visaOrdering',
-//     sanitizeData('visaOrdering'),
-//     jwtAuthService.protect(Admin, ['admin']),
-//     jwtAuthService.restrictTo('admin'),
-//     visaController.visaOrdering
-// );
-
-// router.post('/tour/createFlight',
-//     sanitizeData('createFlight'),
-//     jwtAuthService.protect(Admin, ['admin']),
-//     jwtAuthService.restrictTo('admin'),
-//     tourController.createFlight
-// );
-
-
-// router.post('/createProfile',
-//     jwtAuthService.protect,
-//     userController.createProfile);
 
 module.exports = router;

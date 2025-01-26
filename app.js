@@ -10,8 +10,12 @@ const hpp = require('hpp');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const userRouter = require('./routes/mainRoute');
-// const activationRouter = require('./routes/userActivationRoute'); // Ensure this file exists
-// const createProfileRouter = require('./routes/createProfileRoute'); // Ensure this file exists
+
+
+const { startTaskScheduler } = require('./services/taskSchedulerService');
+
+// Start the task scheduler
+startTaskScheduler();
 
 // Set security HTTP headers
 app.use(helmet());
