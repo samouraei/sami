@@ -16,27 +16,32 @@ const { check, body, validationResult } = require('express-validator');
 // const validateDurationMinDays = check('duration.minDays')
 //   .isInt({ min: 1 }).withMessage('Minimum days must be at least 1');
 
-// const validateDurationMaxDays = check('duration.maxDays').isInt({ min: 1 })
-//   .custom((value, { req }) => value >= req.body.duration.minDays)
-//   .withMessage('Max days must be greater than or equal to min days');
-
-// const validateDocuments = check('requiredDocuments.*').trim().escape(); // Customize as needed
-
-// // Appointment-specific validation
-// const validateAppointmentLocation = check('appointmentLocation').trim().escape().notEmpty()
-//   .withMessage('Appointment location is required');
-
-// // Pickup-specific validation
-// const validatePickupLocation = check('pickupLocation').trim().escape().notEmpty().withMessage('Pickup location is required');
-// const validateDropoffLocation = check('dropoffLocation').trim().escape().notEmpty().withMessage('Dropoff location is required');
-// const validatePickupDate = check('pickupDate').isISO8601().toDate().withMessage('Pickup date must be a valid date');
-
 // Task-specific validation
-const validateTaskType = check('taskType').trim().escape().isIn(['database task', 'frontend task', 'backend task']).withMessage('Invalid task type');
-const validateValidityPeriod = check('validityPeriod').trim().escape().isInt({ min: 1 }).withMessage('Validity period must be a positive integer');
-const validateUrgencyLevel = check('urgencyLevel').trim().escape().isIn(['عادی', 'فوری']).withMessage('Invalid urgency level');
-const validateIssuanceDate = check('issuanceDate').isISO8601().toDate().withMessage('Issuance date must be a valid date');
-const validateUserId = check('userId').trim().escape().isMongoId().withMessage('Invalid user reference');
+const validateTaskType = check('taskType')
+   .trim().escape().isIn(['database task', 'frontend task', 'backend task'])
+   .withMessage('Invalid task type');
+const validateValidityPeriod = check('validityPeriod')
+   .trim()
+   .escape()
+   .isInt({ min: 1 })
+   .withMessage('Validity period must be a positive integer');
+const validateUrgencyLevel = check('urgencyLevel')
+   .trim()
+   .escape()
+   .isIn(['عادی', 'فوری'])
+   .withMessage('Invalid urgency level');
+const validateUserId = check('userId')
+   .trim()
+   .escape()
+   .isMongoId()
+   .withMessage('Invalid user reference');
+const validateTaskId = check('taskId')
+   .trim()
+   .escape()
+   .isMongoId()
+   .withMessage('Invalid task reference');
+
+
 
 
 // Phone number validation
@@ -101,8 +106,16 @@ const sanitizeData = (schema) => {
         validateTaskType,
         validateValidityPeriod,
         validateUrgencyLevel,
-        // validateIssuanceDate,
-        // validateUserId,
+        validateUserId,
+      ];
+      break;
+
+      case 'updateTask':
+      validations = [
+        validateTaskType,
+        validateValidityPeriod,
+        validateUrgencyLevel,
+        validateTaskId,
       ];
       break;
 

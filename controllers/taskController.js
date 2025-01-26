@@ -58,7 +58,7 @@ exports.getUserTasks = catchAsync(async (req, res, next) => {
       status: 200
     }, req, res);
   });
-  
+
   
 
 exports.markTaskAsDone = catchAsync(async (req, res, next) => {
@@ -86,3 +86,23 @@ exports.markTaskAsDone = catchAsync(async (req, res, next) => {
   return message('custom_message',{  msg: "تسک انجام شده است", task, status: 200 },req,res)
 
 });
+
+
+exports.updateTask = catchAsync(async (req, res, next) => {
+    const { taskId } = req.params;
+    const updates = req.body;
+  
+    const task = await Task.findByIdAndUpdate(taskId, updates, {
+      new: true,
+      runValidators: true,
+    });
+  
+    if (!task) {
+
+        return message('custom_message',{  msg: "Task not found.", status: 404 },req,res)
+
+    }
+
+    return message('custom_message',{  msg: "تغییرات انجام شد ", task, status: 200 },req,res)
+
+  });
