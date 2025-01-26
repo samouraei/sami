@@ -1,4 +1,5 @@
 const express = require('express');
+const { redisPublisher, redisSubscriber } = require('./utils/redis');
 const fs = require('fs');
 const app = express();
 const morgan = require('morgan');

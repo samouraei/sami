@@ -1,6 +1,6 @@
-const AppError = require('../utils/appError');
 const {createTask}  = require('../middlewares/task/createTask');
 const catchAsync = require('../utils/catchAsync');
+const { redisPublisher } = require('../utils/redis');
 const {message,msgList} = require('../utils/messages_user');
 const Task = require('../models/taskModel');
 
@@ -100,8 +100,13 @@ exports.updateTask = catchAsync(async (req, res, next) => {
     if (!task) {
 
         return message('custom_message',{  msg: "Task not found.", status: 404 },req,res)
-
     }
+
+     // Publish the task update to Redis for broadcasting
+    await redisPublisher.publish('taskUpdates', JSON.stringify({
+          userId: task.refUser, // User to notify about the task update
+          task,
+         }));
 
     return message('custom_message',{  msg: "تغییرات انجام شد ", task, status: 200 },req,res)
 
