@@ -39,7 +39,7 @@ router.post('/task/createTask',
     taskController.createTask);
 
 router.patch('/updateTask/:taskId',
-    sanitizeData('updateTask'),
+    // sanitizeData('updateTask'),
     jwtAuthService.protect(Admin, ['admin']),
     jwtAuthService.restrictTo('admin'),
     taskController.updateTask);

@@ -61,31 +61,31 @@ exports.getUserTasks = catchAsync(async (req, res, next) => {
 
   
 
-exports.markTaskAsDone = catchAsync(async (req, res, next) => {
-  const { taskId } = req.params; 
-  const userId = req.user.id; 
-
-  const task = await Task.findOne({ _id: taskId, refUser: userId });
-
-  if (!task) {
-
-    return message('custom_message',{  msg: "Task not found or does not belong to you.", status: 404 },req,res)
-
-  }
-
-  if (task.status !== 'progress') {
-
-    return message('custom_message',{  msg: "Task is not in progress and cannot be marked as done.", status: 400 },req,res)
-
-  }
-
-  // Update the task status to 'done'
-  task.status = 'done';
-  await task.save();
-
-  return message('custom_message',{  msg: "تسک انجام شده است", task, status: 200 },req,res)
-
-});
+  exports.markTaskAsDone = catchAsync(async (req, res, next) => {
+    const { taskId } = req.params; 
+    const userId = req.user.id; 
+  
+    const task = await Task.findOne({ _id: taskId, refUser: userId });
+  
+    if (!task) {
+      return message('custom_message', { msg: "Task not found or does not belong to you.", status: 404 }, req, res);
+    }
+  
+    if (task.status !== 'progress') {
+      return message('custom_message', { msg: "Task is not in progress and cannot be marked as done.", status: 400 }, req, res);
+    }
+  
+    task.status = 'done';
+    await task.save();
+  
+    // Publish task update to Redis
+    await redisPublisher.publish(
+      'taskUpdates',
+      JSON.stringify({ taskId: task._id, status: task.status, userId })
+    );
+  
+    return message('custom_message', { msg: "Task marked as done.", task, status: 200 }, req, res);
+  });
 
 
 exports.updateTask = catchAsync(async (req, res, next) => {
