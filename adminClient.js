@@ -7,7 +7,7 @@ const socket = io('http://localhost:3000', {
 
 // Listen for task updates
 socket.on('taskUpdate', (taskUpdate) => {
-  console.log('Task update received:', taskUpdate);
+  console.log('Task update received from socket:', taskUpdate);
 });
 
 // Simulate a connection
