@@ -106,7 +106,6 @@ const sanitizeData = (schema) => {
         validateTaskType,
         validateValidityPeriod,
         validateUrgencyLevel,
-        validateUserId,
       ];
       break;
 

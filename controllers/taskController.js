@@ -1,21 +1,34 @@
-const {createTask}  = require('../middlewares/task/createTask');
 const catchAsync = require('../utils/catchAsync');
 const { redisPublisher } = require('../utils/redis');
 const {message,msgList} = require('../utils/messages_user');
+const User = require('../models/userModel');
 const Task = require('../models/taskModel');
 
-exports.createTask = catchAsync(async (req, res , next) => {
-    const {userID, name, taskType, validityPeriod, duration,urgencyLevel } = req.body;
-    
-    // Assuming createtask is a service function that saves the task
-    const newTask = await createTask
-    (userID,{ name, taskType, validityPeriod, duration,urgencyLevel, req, res });
+exports.createTask = catchAsync(async (req, res, next) => {
+    const { userID, name, taskType, validityPeriod, duration, urgencyLevel } = req.body;
+  
+    const user = await User.findById(userID);
+    if (!user) {
 
-
-    return message('custom_message',{  msg: "تسک جدید ایجاد شد", newTask, status: 200 },req,res)
-
-})
-
+        return message('custom_message', { msg: "No user found matching your criteria.", status: 404 }, req, res);   
+     }
+  
+    const task = new Task({
+      name,
+      taskType,
+      validityPeriod,
+      duration,
+      urgencyLevel,
+      refUser: userID,
+    });
+  
+    await task.save();
+  
+    user.tasks.push(task._id);
+    await user.save();
+  
+    return message('custom_message', { msg: "تسک جدید ایجاد شد", task, status: 200 }, req, res);
+  });
 
 
 exports.getUserTasks = catchAsync(async (req, res, next) => {
