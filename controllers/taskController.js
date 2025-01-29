@@ -28,8 +28,10 @@ exports.createTask = catchAsync(async (req, res, next) => {
     user.tasks.push(task._id);
     await user.save();
   
-    return message('custom_message', { msg: "تسک جدید ایجاد شد", task, status: 200 }, req, res);
-  });
+    return res.status(200).json({
+        message: "تسک جدید ایجاد شد",
+        task: task
+    });  });
 
 
 exports.getUserTasks = catchAsync(async (req, res, next) => {

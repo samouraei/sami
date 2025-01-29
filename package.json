@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js",
-    "debug": "ndb server.js"
+    "debug": "ndb server.js",
+    "test": "mocha test --timeout 5000"
   },
   "author": "",
   "license": "ISC",
@@ -40,6 +41,11 @@
     "xss-clean": "^0.1.4"
   },
   "devDependencies": {
-    "prettier": "3.2.5"
+    "chai": "^5.1.2",
+    "chai-http": "^5.1.1",
+    "mocha": "^11.1.0",
+    "prettier": "3.2.5",
+    "sinon": "^7.5.0",
+    "sinon-mongoose": "^2.3.0"
   }
 }
