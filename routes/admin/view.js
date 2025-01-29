@@ -49,5 +49,10 @@ router.get('/tasks',
     jwtAuthService.restrictTo('admin'),
     taskController.getUserTasks);
 
+router.delete('/deleteTask/:taskId',
+    jwtAuthService.protect(Admin, ['admin']),
+    jwtAuthService.restrictTo('admin'),
+    taskController.deleteTask);
+
 
 module.exports = router;

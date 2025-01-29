@@ -1,6 +1,7 @@
 const catchAsync = require('../utils/catchAsync');
 const { redisPublisher } = require('../utils/redis');
 const {message,msgList} = require('../utils/messages_user');
+const AppError = require('../utils/appError');
 const User = require('../models/userModel');
 const Task = require('../models/taskModel');
 
@@ -10,7 +11,7 @@ exports.createTask = catchAsync(async (req, res, next) => {
     const user = await User.findById(userID);
     if (!user) {
 
-        return message('custom_message', { msg: "No user found matching your criteria.", status: 404 }, req, res);   
+        return next(new AppError('کاربر با این مشخصات یافت نشد.', 404));
      }
   
     const task = new Task({
@@ -53,15 +54,10 @@ exports.getUserTasks = catchAsync(async (req, res, next) => {
       }
     }
     
-    
     const tasks = await Task.find(filter);
     
-    
     if (tasks.length === 0) {
-      return message('custom_message', {
-        msg: "No tasks found matching your criteria.",
-        status: 404
-      }, req, res);
+        return next(new AppError('تسک با این مشخصات یافت نشد.', 404));
     }
   
    
@@ -81,11 +77,11 @@ exports.getUserTasks = catchAsync(async (req, res, next) => {
     const task = await Task.findOne({ _id: taskId, refUser: userId });
   
     if (!task) {
-      return message('custom_message', { msg: "Task not found or does not belong to you.", status: 404 }, req, res);
-    }
+        return next(new AppError('تسک مورد نظر یافت نشد.', 404));    }
   
     if (task.status !== 'progress') {
-      return message('custom_message', { msg: "Task is not in progress and cannot be marked as done.", status: 400 }, req, res);
+        return next(new AppError('تسک با این مشخصات یافت نشد.', 400));
+    //   return message('custom_message', { msg: "Task is not in progress and cannot be marked as done.", status: 400 }, req, res);
     }
   
     task.status = 'done';
@@ -112,7 +108,7 @@ exports.updateTask = catchAsync(async (req, res, next) => {
   
     if (!task) {
 
-        return message('custom_message',{  msg: "Task not found.", status: 404 },req,res)
+        return next(new AppError('تسک مورد نظر یافت نشد.', 404));
     }
 
      // Publish the task update to Redis for broadcasting
@@ -123,4 +119,23 @@ exports.updateTask = catchAsync(async (req, res, next) => {
 
     return message('custom_message',{  msg: "تغییرات انجام شد ", task, status: 200 },req,res)
 
+  });
+
+
+  exports.deleteTask = catchAsync(async (req, res, next) => {
+    const {taskId}  = req.params;
+
+    console.log(taskId)
+  
+    const task = await Task.findById(taskId);
+    if (!task) {
+      return next(new AppError('تسک مورد نظر یافت نشد.', 404));
+    }
+  
+    // Remove the task reference from the user's tasks array
+    await User.findByIdAndUpdate(task.refUser, { $pull: { tasks: taskId } });
+  
+    await task.deleteOne();
+  
+    return message('custom_message', { msg: "تسک با موفقیت حذف شد", status: 200 }, req, res);
   });
