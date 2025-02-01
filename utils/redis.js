@@ -1,12 +1,14 @@
 const { createClient } = require('redis');
 
 const redisPublisher = createClient({
-  socket: { host: "127.0.0.1", port: 6379 }, // Force IPv4
+  socket: { host: "redis", port: 6379 }, // Use the service name "redis"
 });
 
 const redisSubscriber = createClient({
-  socket: { host: "127.0.0.1", port: 6379 }, // Force IPv4
+  socket: { host: "redis", port: 6379 }, // Use the service name "redis"
 });
+
+// Rest of your code...
 
 // Connect Redis clients
 (async () => {

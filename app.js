@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const fs = require('fs');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
@@ -16,6 +17,10 @@ const app = express();
 
 // Start the task scheduler
 startTaskScheduler();
+
+app.use(cors({
+  origin: 'http://localhost:3000', // Replace with your frontend port
+}));
 
 // Set security HTTP headers
 app.use(helmet());
