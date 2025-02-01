@@ -10,7 +10,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
-const userRouter = require('./routes/mainRoute');
+const Router = require('./routes/mainRoute');
 const { startTaskScheduler } = require('./services/taskSchedulerService');
 
 const app = express();
@@ -68,7 +68,7 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use('/api/v1/web', userRouter);
+app.use('/api/v1/web', Router);
 
 // Handle undefined routes
 app.all('*', (req, res, next) => {
